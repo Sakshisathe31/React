@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from "express";
-
-import { HttpError } from "http-errors"; // Assuming you use http-errors
-
+import { HttpError } from "http-errors";
+import { config } from "../config/config";
 
 const globalErrorHandler = (
-  err: HttpError, 
-  req: Request, 
-  res: Response, 
+  err: HttpError,
+  req: Request,
+  res: Response,
   next: NextFunction
 ) => {
   const statusCode = err.statusCode || 500;
+
   return res.status(statusCode).json({
     message: err.message,
-    errorStack: process.env.NODE_ENV === "development" ? err.stack : "",
+    errorStack: config.env === "development" ? err.stack : "",
   });
 };
 
